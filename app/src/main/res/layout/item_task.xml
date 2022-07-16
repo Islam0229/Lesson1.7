@@ -12,6 +12,8 @@
         android:layout_margin="8dp"
         android:background="@color/app_bg_color"
         android:text="Create your task."
+        android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
