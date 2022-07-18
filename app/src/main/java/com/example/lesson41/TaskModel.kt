@@ -1,5 +1,8 @@
 package com.example.lesson41
 
-class TaskModel (
-    val task: String
-)
+import java.io.Serializable
+
+data class TaskModel(
+    val task: String,
+    var time: Long
+) : Serializable

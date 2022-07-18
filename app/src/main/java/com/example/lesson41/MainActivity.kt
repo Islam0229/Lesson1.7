@@ -2,6 +2,7 @@ package com.example.lesson41
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -32,6 +33,17 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val listFragment = arrayListOf(
+            R.id.navigation_home,
+            R.id.navigation_dashboard,
+            R.id.navigation_notifications,
+            R.id.profileFragment
+        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            navView.isVisible = listFragment.contains(destination.id)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

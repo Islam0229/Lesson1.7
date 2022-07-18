@@ -24,14 +24,15 @@
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.lesson41.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
         android:id="@+id/taskFragment"
         android:name="com.example.lesson41.TaskFragment"
         android:label="fragment_task"
         tools:layout="@layout/fragment_task" />
 
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.lesson41.ui.profile.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
 </navigation>

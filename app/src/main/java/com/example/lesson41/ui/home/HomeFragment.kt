@@ -1,12 +1,11 @@
 package com.example.lesson41.ui.home
 
-import android.app.Activity
-import android.content.Intent
+import android.app.AlertDialog
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -15,6 +14,7 @@ import com.example.lesson41.R
 import com.example.lesson41.TaskAdapter
 import com.example.lesson41.TaskModel
 import com.example.lesson41.databinding.FragmentHomeBinding
+import com.example.lesson41.ext.Const
 
 class HomeFragment : Fragment() {
 
@@ -31,46 +31,66 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        taskAdapter = TaskAdapter(
+            onClick = { task ->
+                editTask(task)
+            },
+            onLongClick = { task ->
+                deleteTaskDialog(task)
+            }
+        )
+    }
+
+    private fun editTask(task: TaskModel) {
+        val bundle = bundleOf(Const.ARG_TASK to task)
+        findNavController().navigate(R.id.taskFragment, bundle)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fabtn.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
         }
-        setFragmentResultListener("result") { key, bundle ->
-            val text = bundle.getString("key").orEmpty()
-            val model = TaskModel(text)
-            taskAdapter.addTask(model)
+        setFragmentResultListener(Const.REQUEST_TASK_RESULT) { key, bundle ->
+            if (bundle.containsKey(Const.KEY_FOR_EXISTING_TASK)) {
+                val task = bundle.getSerializable(Const.KEY_FOR_EXISTING_TASK) as TaskModel
+                taskAdapter.editTask(task)
+            }
+            if (bundle.containsKey(Const.KEY_FOR_TASK)) {
+                val text = bundle.getSerializable(Const.KEY_FOR_TASK) as TaskModel
+                taskAdapter.addTask(text)
+            }
         }
         initAdapter()
-        binding.img.setOnClickListener {
-            openGallery()
-        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-            val bitmap =
-                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, data.data)
-            binding.img.setImageBitmap(bitmap)
+    private fun deleteTaskDialog(task: TaskModel) {
+
+        val d = AlertDialog.Builder(requireContext())
+        d.setTitle("Delete the task?")
+        d.setNegativeButton("No") { dialog, p1 ->
+            dialog.cancel()
         }
+        d.setPositiveButton("Yes") { dialog, p1 ->
+            deleteTask(task)
+            dialog.cancel()
+        }
+        d.create().show()
+    }
+
+    private fun deleteTask(task: TaskModel) {
+        taskAdapter.removeTask(task)
     }
 
     private fun initAdapter() {
         binding.rvTask.layoutManager = LinearLayoutManager(requireContext())
-        taskAdapter = TaskAdapter()
         binding.rvTask.adapter = taskAdapter
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "select picture")
-        startActivityForResult(chooser, 1)
     }
 }

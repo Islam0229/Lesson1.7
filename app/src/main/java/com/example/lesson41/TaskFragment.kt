@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.lesson41.databinding.FragmentTaskBinding
+import com.example.lesson41.ext.Const
 
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
+    private var task: TaskModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,11 +30,41 @@ class TaskFragment : Fragment() {
         binding.saveBtn.setOnClickListener {
             save()
         }
+        checkTask()
     }
 
     private fun save() {
-        val bundle = bundleOf("key" to binding.etTask.text.toString())
-        setFragmentResult("result", bundle)
+        val updatedTask = binding.etTask.text.toString()
+        val isNewTask = task == null
+        if (isNewTask) {
+            returnNewTask(updatedTask)
+        } else {
+            returnExistingTask(updatedTask)
+        }
+    }
+
+    private fun checkTask() {
+        task = arguments?.getSerializable(Const.ARG_TASK) as? TaskModel
+        if (task != null) {
+            binding.etTask.setText(task!!.task)
+        }
+    }
+
+    private fun returnNewTask(updatedTask: String) {
+        val bundle = bundleOf(
+            Const.KEY_FOR_TASK to TaskModel(updatedTask, System.currentTimeMillis())
+        )
+        setFragmentResult(Const.REQUEST_TASK_RESULT, bundle)
         findNavController().navigateUp()
     }
+
+    private fun returnExistingTask(updatedTask: String) {
+        val time = task?.time ?: return
+        val bundle = bundleOf(
+            Const.KEY_FOR_EXISTING_TASK to TaskModel(updatedTask, time)
+        )
+        setFragmentResult(Const.REQUEST_TASK_RESULT, bundle)
+        findNavController().navigateUp()
+    }
+
 }
