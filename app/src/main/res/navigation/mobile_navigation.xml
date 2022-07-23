@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/fragment_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -31,8 +31,14 @@
 
     <fragment
         android:id="@+id/taskFragment"
-        android:name="com.example.lesson41.TaskFragment"
+        android:name="com.example.lesson41.ui.task.TaskFragment"
         android:label="fragment_task"
         tools:layout="@layout/fragment_task" />
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.example.lesson41.ui.onBoard.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding" />
 
 </navigation>

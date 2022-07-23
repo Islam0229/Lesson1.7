@@ -1,4 +1,4 @@
-package com.example.lesson41
+package com.example.lesson41.ui.task
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.example.lesson41.TaskModel
 import com.example.lesson41.databinding.FragmentTaskBinding
 import com.example.lesson41.ext.Const
 
@@ -28,12 +29,12 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.saveBtn.setOnClickListener {
-            save()
+            saveOrUpdate()
         }
         checkTask()
     }
 
-    private fun save() {
+    private fun saveOrUpdate() {
         val updatedTask = binding.etTask.text.toString()
         val isNewTask = task == null
         if (isNewTask) {
@@ -66,5 +67,4 @@ class TaskFragment : Fragment() {
         setFragmentResult(Const.REQUEST_TASK_RESULT, bundle)
         findNavController().navigateUp()
     }
-
 }
