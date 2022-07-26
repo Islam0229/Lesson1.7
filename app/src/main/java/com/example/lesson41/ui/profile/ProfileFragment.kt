@@ -1,7 +1,6 @@
 package com.example.lesson41.ui.profile
 
 import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.example.lesson41.R
 import com.example.lesson41.databinding.FragmentProfileBinding
+import com.example.lesson41.ext.alertDialog
 import com.example.lesson41.ext.loadImage
 import com.example.lesson41.ext.showToast
 
@@ -44,25 +45,18 @@ class ProfileFragment : Fragment() {
         }
         binding.img.setOnLongClickListener {
             if (binding.img.drawable != null) {
-                showToast("Photo is already inserted.")
+                showToast(getString(R.string.image_exists))
             } else {
-                galleryDialog()
+                requireContext().alertDialog(
+                    getString(R.string.add_photo),
+                    getString(R.string.no),
+                    getString(R.string.yes)
+                ) {
+                    loadFromGalley()
+                }
             }
             true
         }
-    }
-
-    private fun galleryDialog() {
-        val d = AlertDialog.Builder(requireContext())
-        d.setTitle("Add photo")
-        d.setNegativeButton("No") { dialog, p1 ->
-            dialog.cancel()
-        }
-        d.setPositiveButton("Yes") { dialog, p1 ->
-            loadFromGalley()
-            dialog.cancel()
-        }
-        d.create().show()
     }
 
     private fun loadFromGalley() {
@@ -77,4 +71,6 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 }
+
+
 

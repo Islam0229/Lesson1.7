@@ -8,4 +8,9 @@
     <string name="input_your_task">Input your task</string>
     <string name="save">SAVE</string>
     <string name="profile">Profile</string>
+    <string name="add_photo">Add photo</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="image_exists">Photo is already inserted.</string>
+    <string name="delete_item_title">Delete the task?</string>
 </resources>

@@ -15,6 +15,7 @@ import com.example.lesson41.TaskAdapter
 import com.example.lesson41.TaskModel
 import com.example.lesson41.databinding.FragmentHomeBinding
 import com.example.lesson41.ext.Const
+import com.example.lesson41.ext.alertDialog
 
 class HomeFragment : Fragment() {
 
@@ -67,17 +68,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun deleteTaskDialog(task: TaskModel) {
-
-        val d = AlertDialog.Builder(requireContext())
-        d.setTitle("Delete the task?")
-        d.setNegativeButton("No") { dialog, p1 ->
-            dialog.cancel()
-        }
-        d.setPositiveButton("Yes") { dialog, p1 ->
+        requireContext().alertDialog(getString(R.string.delete_item_title),
+            getString(R.string.no),  getString(R.string.yes)){
             deleteTask(task)
-            dialog.cancel()
         }
-        d.create().show()
     }
 
     private fun deleteTask(task: TaskModel) {
