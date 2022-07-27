@@ -2,6 +2,7 @@ package com.example.lesson41.ui.profile
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,13 @@ import com.example.lesson41.databinding.FragmentProfileBinding
 import com.example.lesson41.ext.alertDialog
 import com.example.lesson41.ext.loadImage
 import com.example.lesson41.ext.showToast
+import com.example.lesson41.ui.Pref
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
+
+    private lateinit var pref: SharedPreferences
 
     private val binding get() = _binding!!
 
@@ -57,6 +61,7 @@ class ProfileFragment : Fragment() {
             }
             true
         }
+        saveText()
     }
 
     private fun loadFromGalley() {
@@ -69,6 +74,11 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun saveText(name: String) {
+        name.also { binding.etName.text = it }
+        Pref(requireContext()).saveText(name)
     }
 }
 
