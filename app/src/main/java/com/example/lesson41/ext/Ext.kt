@@ -7,9 +7,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.lesson41.R
 
 fun ImageView.loadImage(url: Uri?) {
-    Glide.with(this).load(url).into(this)
+    Glide.with(this).load(url).circleCrop().into(this)
 }
 
 fun Fragment.showToast(msg: String) {

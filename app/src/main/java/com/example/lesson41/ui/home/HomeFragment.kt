@@ -1,21 +1,20 @@
 package com.example.lesson41.ui.home
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lesson41.App
 import com.example.lesson41.R
-import com.example.lesson41.TaskAdapter
-import com.example.lesson41.TaskModel
 import com.example.lesson41.databinding.FragmentHomeBinding
 import com.example.lesson41.ext.Const
 import com.example.lesson41.ext.alertDialog
+import com.example.lesson41.models.TaskModel
+import com.example.lesson41.ui.task.TaskAdapter
 
 class HomeFragment : Fragment() {
 
@@ -54,28 +53,24 @@ class HomeFragment : Fragment() {
         binding.fabtn.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
         }
-        setFragmentResultListener(Const.REQUEST_TASK_RESULT) { key, bundle ->
-            if (bundle.containsKey(Const.KEY_FOR_EXISTING_TASK)) {
-                val task = bundle.getSerializable(Const.KEY_FOR_EXISTING_TASK) as TaskModel
-                taskAdapter.editTask(task)
-            }
-            if (bundle.containsKey(Const.KEY_FOR_TASK)) {
-                val text = bundle.getSerializable(Const.KEY_FOR_TASK) as TaskModel
-                taskAdapter.addTask(text)
-            }
-        }
+        val data = App.dataBase.dao().getAll()
+        taskAdapter.addData(data)
         initAdapter()
     }
 
     private fun deleteTaskDialog(task: TaskModel) {
-        requireContext().alertDialog(getString(R.string.delete_item_title),
-            getString(R.string.no),  getString(R.string.yes)){
+        requireContext().alertDialog(
+            getString(R.string.delete_item_title),
+            getString(R.string.no), getString(R.string.yes)
+        ) {
             deleteTask(task)
         }
     }
 
     private fun deleteTask(task: TaskModel) {
-        taskAdapter.removeTask(task)
+        task?.id?.let { TaskModel(it, task.toString(), System.currentTimeMillis()) }
+            ?.let { App.dataBase.dao().delete(it) }
+        /*taskAdapter.removeTask(task)*/
     }
 
     private fun initAdapter() {

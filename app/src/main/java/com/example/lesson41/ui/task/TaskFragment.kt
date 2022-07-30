@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
-import com.example.lesson41.TaskModel
+import com.example.lesson41.App
 import com.example.lesson41.databinding.FragmentTaskBinding
 import com.example.lesson41.ext.Const
+import com.example.lesson41.models.TaskModel
 
 class TaskFragment : Fragment() {
 
@@ -42,6 +41,7 @@ class TaskFragment : Fragment() {
         } else {
             returnExistingTask(updatedTask)
         }
+        findNavController().navigateUp()
     }
 
     private fun checkTask() {
@@ -52,19 +52,11 @@ class TaskFragment : Fragment() {
     }
 
     private fun returnNewTask(updatedTask: String) {
-        val bundle = bundleOf(
-            Const.KEY_FOR_TASK to TaskModel(updatedTask, System.currentTimeMillis())
-        )
-        setFragmentResult(Const.REQUEST_TASK_RESULT, bundle)
-        findNavController().navigateUp()
+        App.dataBase.dao().insert(TaskModel(0, updatedTask, System.currentTimeMillis()))
     }
 
     private fun returnExistingTask(updatedTask: String) {
-        val time = task?.time ?: return
-        val bundle = bundleOf(
-            Const.KEY_FOR_EXISTING_TASK to TaskModel(updatedTask, time)
-        )
-        setFragmentResult(Const.REQUEST_TASK_RESULT, bundle)
-        findNavController().navigateUp()
+        task?.id?.let { TaskModel(it, updatedTask, System.currentTimeMillis()) }
+            ?.let { App.dataBase.dao().update(it) }
     }
 }

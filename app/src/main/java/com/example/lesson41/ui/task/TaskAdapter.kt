@@ -1,9 +1,11 @@
-package com.example.lesson41
+package com.example.lesson41.ui.task
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lesson41.R
 import com.example.lesson41.databinding.ItemTaskBinding
+import com.example.lesson41.models.TaskModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +25,14 @@ class TaskAdapter(
         val index = tasks.indexOfFirst { it.time == new.time }
         tasks[index] = new
         notifyItemChanged(index)
+    }
+
+    fun addData(data: List<TaskModel>?) {
+        tasks.clear()
+        data?.let {
+            tasks.addAll(it)
+        }
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

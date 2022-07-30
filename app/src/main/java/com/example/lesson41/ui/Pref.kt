@@ -15,9 +15,14 @@ class Pref(private val context: Context) {
         return context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("isShown", false)
     }
 
-    fun saveText(name: String) {
-        context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit().putBoolean("saveText", true)
+    fun saveName(name: String) {
+        context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit().putString("saveText", name)
             .commit()
+    }
+
+    fun getName(): String {
+        return context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).getString("saveText", "")
+            .toString()
     }
 
 }

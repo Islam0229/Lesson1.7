@@ -2,8 +2,9 @@ package com.example.lesson41.ui.profile
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,6 @@ import com.example.lesson41.ui.Pref
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-
-    private lateinit var pref: SharedPreferences
 
     private val binding get() = _binding!!
 
@@ -44,6 +43,23 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.etName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                saveText(binding.etName.text.toString())
+            }
+        })
+
+        binding.etName.setText(Pref(requireContext()).getName())
+
         binding.img.setOnClickListener {
             loadFromGalley()
         }
@@ -61,7 +77,6 @@ class ProfileFragment : Fragment() {
             }
             true
         }
-        saveText()
     }
 
     private fun loadFromGalley() {
@@ -77,8 +92,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun saveText(name: String) {
-        name.also { binding.etName.text = it }
-        Pref(requireContext()).saveText(name)
+        Pref(requireContext()).saveName(name)
     }
 }
 
