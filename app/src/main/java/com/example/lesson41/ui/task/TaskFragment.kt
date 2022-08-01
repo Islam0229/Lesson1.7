@@ -34,7 +34,9 @@ class TaskFragment : Fragment() {
     }
 
     private fun saveOrUpdate() {
-        val updatedTask = binding.etTask.text.toString()
+        val updatedTask = binding.etTask.text.toString().lowercase().replaceFirstChar {
+            it.uppercase()
+        }
         val isNewTask = task == null
         if (isNewTask) {
             returnNewTask(updatedTask)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -53,9 +54,35 @@ class HomeFragment : Fragment() {
         binding.fabtn.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
         }
+        getData()
+        initAdapter()
+        initSearch()
+    }
+
+    private fun initSearch() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val task: TaskModel? = App.dataBase.dao().getTask(query.toString())
+                if (task != null) {
+                    taskAdapter.setSearchResult(task)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+        binding.searchView.setOnCloseListener {
+            getData()
+            false
+        }
+    }
+
+    private fun getData() {
         val data = App.dataBase.dao().getAll()
         taskAdapter.addData(data)
-        initAdapter()
     }
 
     private fun deleteTaskDialog(task: TaskModel) {
@@ -68,9 +95,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun deleteTask(task: TaskModel) {
-        task?.id?.let { TaskModel(it, task.toString(), System.currentTimeMillis()) }
-            ?.let { App.dataBase.dao().delete(it) }
-        /*taskAdapter.removeTask(task)*/
+        App.dataBase.dao().delete(task)
+        getData()
     }
 
     private fun initAdapter() {

@@ -21,6 +21,12 @@ class TaskAdapter(
         notifyItemInserted(tasks.lastIndex)
     }
 
+    fun setSearchResult(newTaskModel: TaskModel){
+        tasks.clear()
+        tasks.add(newTaskModel)
+        notifyDataSetChanged()
+    }
+
     fun editTask(new: TaskModel) {
         val index = tasks.indexOfFirst { it.time == new.time }
         tasks[index] = new

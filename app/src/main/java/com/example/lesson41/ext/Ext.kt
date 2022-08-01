@@ -29,7 +29,7 @@ fun Context.alertDialog(
         dialog.cancel()
     }
     d.setPositiveButton(positiveButtonTitle) { dialog, p1 ->
-       onPositiveClick
+       onPositiveClick()
         dialog.cancel()
     }
     d.create().show()

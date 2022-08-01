@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         if (!Pref(this).isShown()) {
             navController.navigate(R.id.onBoardingFragment)

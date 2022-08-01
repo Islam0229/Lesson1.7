@@ -8,7 +8,7 @@ import com.example.lesson41.models.TaskModel
 @Dao
 interface Dao {
 
-    @Query("SELECT * FROM taskmodel")
+    @Query("SELECT * FROM taskmodel ORDER BY time DESC")
     fun getAll(): List<TaskModel>?
 
     @Insert
@@ -19,4 +19,7 @@ interface Dao {
 
     @Delete
     fun delete(task: TaskModel)
+
+    @Query("SELECT * FROM taskModel WHERE task=:title")
+    fun getTask(title: String): TaskModel?
 }
