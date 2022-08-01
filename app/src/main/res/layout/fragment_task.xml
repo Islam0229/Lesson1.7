@@ -7,17 +7,26 @@
     android:background="@color/app_bg_color"
     tools:context=".ui.task.TaskFragment">
 
-    <EditText
-        android:id="@+id/et_task"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_et_task"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/page_margin"
         android:layout_marginTop="8dp"
-        android:hint="@string/input_your_task"
-        android:textColorHint="@color/black"
+        app:boxStrokeColor="@color/app_theme_color"
+        app:hintTextColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_your_task" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/save_btn"
@@ -29,6 +38,6 @@
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_task" />
+        app:layout_constraintTop_toBottomOf="@+id/input_et_task" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
