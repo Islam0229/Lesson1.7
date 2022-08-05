@@ -4,20 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.lesson41.R
 import com.example.lesson41.databinding.ItemBoardingBinding
+import com.example.lesson41.models.BoardModel
 
 class BoardingAdapter(private val onStartClick: () -> Unit) :
     RecyclerView.Adapter<BoardingAdapter.ViewHolder>() {
 
-    val arrayList = arrayListOf("Create your tasks", "Edit them", "Manage")
-    /*val arrayListImages =
-        arrayListOf(
-            R.drawable.illustration,
-            R.drawable.illustration2,
-            R.drawable.illustration3
-        )*/
+    val arrayList = arrayListOf<BoardModel>(
+        BoardModel("Create your tasks", R.raw.manager1),
+        BoardModel("Edit them", R.raw.manager2),
+        BoardModel("Manage", R.raw.manager3)
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -38,9 +36,8 @@ class BoardingAdapter(private val onStartClick: () -> Unit) :
     inner class ViewHolder(private val binding: ItemBoardingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            binding.tvTitle.text = arrayList.get(adapterPosition)
-            /*Glide.with(binding.lottieMain).load(arrayListImages).circleCrop().into(binding.lottieMain)*/
-           /* binding.lottieMain.setImageResource(arrayListImages.get(adapterPosition) as Int)*/
+            binding.tvTitle.text = arrayList[adapterPosition].title
+            binding.lottieMain.setAnimation(arrayList[adapterPosition].lottie)
             binding.btnStart.isVisible = adapterPosition == arrayList.lastIndex
             binding.btnStart.setOnClickListener {
                 onStartClick()

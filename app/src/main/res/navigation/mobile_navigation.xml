@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/authFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -40,5 +40,11 @@
         android:name="com.example.lesson41.ui.onBoard.OnBoardingFragment"
         android:label="fragment_on_boarding"
         tools:layout="@layout/fragment_on_boarding" />
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.lesson41.ui.auth.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth" />
 
 </navigation>
